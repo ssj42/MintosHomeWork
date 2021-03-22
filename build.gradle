@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+    id "org.gradle.test-retry" version "1.1.9"
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+    forkEvery = 2
+    retry {
+        failOnPassedAfterRetry = false
+        maxFailures = 30
+        maxRetries = 1
+    }
+    maxParallelForks = 5
+    minHeapSize("512m")
+    maxHeapSize("4096m")
+}
+
+wrapper {
+    gradleVersion = "6.7"
+    distributionType = Wrapper.DistributionType.BIN
+}
+
+dependencies {
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0-alpha-7'
+    implementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.2'
+    implementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.6.2'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.3'
+}
